@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const slotMatchingSchema = mongoose.Schema({
-    BookingId : Number,
     Status : String,
     Time : Number,
     Topic : String,
