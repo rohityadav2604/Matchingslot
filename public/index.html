@@ -31,8 +31,14 @@
     <script>
         var socket=io()
         // make connection with server from user side
-        var scoket = io.connect('localhost:3000');
-        console.log(socket);
+        var socket = io.connect('localhost:3000');
+        // console.log(socket);
+        socket.on("matched",(data) => {
+            console.log("matched" + data);
+        })
+        socket.on("unmatched",(data) => {
+            console.log("unmatched" + data);
+        })
         </script>    
     
 </body>

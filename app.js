@@ -6,12 +6,14 @@ const socketIO = require('socket.io');
 const http = require('http')
 
 const app = express();
+app.use(express.static(__dirname+"/public"));
 
 let server = http.createServer(app)
 let io = socketIO(server)
 
 io.on('connection', (socket)=>{
     console.log('New user connected');
+    // socket.emit("matched","test");
      
   });
 
@@ -62,13 +64,16 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
+            
             return matched[i];
         }
     }
 
     if(f==0)
-    return -1;
-
+    {   
+        
+        return -1;
+    }
     // res.send("there are no matches found");
 
 }
@@ -96,11 +101,15 @@ app.post("/join",async (req,res) => {
     const result =    await matching(slotMatch);
     // res.send(slotMatch);
     if(result != -1)
-    {
-        res.send("you are macthed with "+ result.UserId);
+    {   
+        io.emit("matched","test2");
+        res.sendFile(__dirname+"/public/room.html");
+        // res.send("you are macthed with "+ result.UserId);
     }
     else{
-        res.send("No match found");
+        io.emit("unmatched","test3");
+        res.sendFile(__dirname+"/public/loading.html");
+    //    res.send("No match found");
     }
 
     
