@@ -2,23 +2,23 @@ const express = require("express");
 const mongoose = require("mongoose");
 const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
-var bodyParser = require('body-parser')
+
 const app = express();
-const user = {
 
-}
+app.use(express.json());
+app.use(express.urlencoded());
 
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.get('/' , urlencodedParser,(req , res)=>{
+app.get('/'  ,(req , res)=>{
     res.send("basic server");
 })
 
-app.post('/slotbook' ,jsonParser, async(req , res)=>{
+app.post('/slotbook' , async(req , res)=>{
     //save object;
     try{
         // res.send("slotBook");
+        console.log("hello i am form data");
+        console.log(req);
         const slotBook = new slotBooking();
         // console.log(req.body);
         slotBook.BookingId = req.body.BookingId;
@@ -63,7 +63,7 @@ async function matching(slotMatch){
 
 }
 
-app.post("/join",jsonParser,async (req,res) => {
+app.post("/join",async (req,res) => {
     try {
         // console.log(req)
     const userId = req.body.UserId;
