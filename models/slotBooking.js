@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
 
 const slotBookingSchema = mongoose.Schema({
     BookingId : Number,
@@ -16,4 +16,4 @@ const slotBookingSchema = mongoose.Schema({
 
 const SlotBooking = mongoose.model('SlotBooking',slotBookingSchema);
 
-export default SlotBooking;
+module.exports = SlotBooking;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
 
 const slotMatchingSchema = mongoose.Schema({
     BookingId : Number,
@@ -17,4 +17,4 @@ const slotMatchingSchema = mongoose.Schema({
 
 const SlotMatching = mongoose.model('SlotMatching',slotMatchingSchema);
 
-export default SlotMatching;
+module.exports= SlotMatching;
