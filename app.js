@@ -2,8 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
+const socketIO = require('socket.io');
+const http = require('http')
 
 const app = express();
+
+let server = http.createServer(app)
+let io = socketIO(server)
+
+io.on('connection', (socket)=>{
+    console.log('New user connected');
+     
+  });
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -106,4 +116,4 @@ app.post("/join",async (req,res) => {
 mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
 .then(console.log("connected succesfully"))
 .catch((err)=>{console.log(err)});
-app.listen(3000);
+server.listen(3000);
