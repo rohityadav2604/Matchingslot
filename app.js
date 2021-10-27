@@ -38,6 +38,30 @@ app.post('/slotbook' ,jsonParser, async(req , res)=>{
 
 })
 
+
+async function matching(slotMatch){
+        
+    const matched = await slotMatching.find({Time : slotMatch.Time,Topic : slotMatch.Topic,LanguagePreffered : slotMatch.LanguagePreffered});
+    console.log(matched);
+    let f =0;
+
+    for(let i = 0;i<matched.length ;i++){
+        if(matched[i].UserId != slotMatch.UserId && matched[i].Status  == "queued")
+        {   
+            f = 1;
+            console.log("matched");
+            
+            return matched[i];
+        }
+    }
+
+    if(f==0)
+    return -1;
+
+    // res.send("there are no matches found");
+
+}
+
 app.post("/join",jsonParser,async (req,res) => {
     try {
         // console.log(req)
@@ -50,9 +74,17 @@ app.post("/join",jsonParser,async (req,res) => {
     slotMatch.Topic = slotBook[0].Topic;
     slotMatch.LanguagePreffered = slotBook[0].LanguagePreffered;
     slotMatch.AllotedRoomId = -1;
-    
+    slotMatch.UserId = userId;
     await slotMatch.save()
-    res.send(slotMatch);
+    const result =    await matching(slotMatch);
+    // res.send(slotMatch);
+    if(result != -1)
+    {
+        res.send("you are macthed with "+ result.UserId);
+    }
+    else{
+        res.send("No match found");
+    }
 
     
     
