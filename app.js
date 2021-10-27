@@ -50,7 +50,8 @@ async function matching(slotMatch){
         {   
             f = 1;
             console.log("matched");
-            
+            await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched"});
+            await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched"});
             return matched[i];
         }
     }
@@ -75,7 +76,15 @@ app.post("/join",jsonParser,async (req,res) => {
     slotMatch.LanguagePreffered = slotBook[0].LanguagePreffered;
     slotMatch.AllotedRoomId = -1;
     slotMatch.UserId = userId;
-    await slotMatch.save()
+
+    const isExist = await slotMatching.find({UserId : userId});
+
+    if(isExist.length == 0)
+    await slotMatch.save();
+    else {
+        slotMatch = isExist[0];
+    }
+
     const result =    await matching(slotMatch);
     // res.send(slotMatch);
     if(result != -1)
