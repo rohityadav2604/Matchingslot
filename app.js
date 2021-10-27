@@ -2,24 +2,31 @@ const express = require("express");
 const mongoose = require("mongoose");
 const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
+var bodyParser = require('body-parser')
 const app = express();
 const user = {
 
 }
 
-app.get('/' , (req , res)=>{
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+app.get('/' , urlencodedParser,(req , res)=>{
     res.send("basic server");
 })
 
-app.post('/slotbook' , async(req , res)=>{
+app.post('/slotbook' ,jsonParser, async(req , res)=>{
     //save object;
     try{
+        // res.send("slotBook");
         const slotBook = new slotBooking();
-        slotBook.BookingId = req.BookingId;
-        slotBook.UserId = req.UserId;
-        slotBook.Topic = req.Topic;
-        slotBook.SlotDateTime = req.SlotDateTime;
-        slotBook.LanguagePreffered = req.LanguagePreffered;
+        // console.log(req.body);
+        slotBook.BookingId = req.body.BookingId;
+        slotBook.UserId = req.body.UserId;
+        slotBook.Topic = req.body.Topic;
+        slotBook.SlotDateTime = req.body.SlotDateTime;
+        slotBook.LanguagePreffered = req.body.LanguagePreffered;
+        slotBook.Time = req.body.Time;
         await slotBook.save();
         res.send("succesfully added");
 
@@ -30,7 +37,7 @@ app.post('/slotbook' , async(req , res)=>{
    
 
 })
-mongoose.connect("mongodb+srv://Matching:admin@123@cluster0.jabnw.mongodb.net/Matching?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
 .then(console.log("connected succesfully"))
 .catch((err)=>{console.log(err)});
 app.listen(3000);
