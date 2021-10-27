@@ -14,6 +14,8 @@ let io = socketIO(server)
 io.on('connection', (socket)=>{
     console.log('New user connected');
     // socket.emit("matched","test");
+    // socket.on('join',)
+    console.log(socket.id)
      
   });
 
@@ -28,6 +30,7 @@ app.get('/'  ,(req , res)=>{
 app.post('/slotbook' , async(req , res)=>{
     //save object;
     try{
+        
         // res.send("slotBook");
         console.log("hello i am form data");
         console.log(req);
@@ -39,6 +42,7 @@ app.post('/slotbook' , async(req , res)=>{
         slotBook.SlotDateTime = req.body.SlotDateTime;
         slotBook.LanguagePreffered = req.body.LanguagePreffered;
         slotBook.Time = req.body.Time;
+        
         await slotBook.save();
         res.send("succesfully added");
 
@@ -57,7 +61,11 @@ async function matching(slotMatch){
     console.log(matched);
     let f =0;
 
+  
+
     for(let i = 0;i<matched.length ;i++){
+        
+    
         if(matched[i].UserId != slotMatch.UserId && matched[i].Status  == "queued")
         {   
             f = 1;
@@ -83,26 +91,37 @@ app.post("/join",async (req,res) => {
         // console.log(req)
     const userId = req.body.UserId;
     console.log(userId);
-    const slotBook = await  slotBooking.find({UserId : userId});
-    slotMatch = new slotMatching();
-    slotMatch.Status = "queued";
-    slotMatch.Time = slotBook[0].Time;
-    slotMatch.Topic = slotBook[0].Topic;
-    slotMatch.LanguagePreffered = slotBook[0].LanguagePreffered;
-    slotMatch.AllotedRoomId = -1;
-    slotMatch.UserId = userId;
-
+    
     const isExist = await slotMatching.find({UserId : userId});
 
     if(isExist.length == 0)
-    await slotMatch.save();
+    {
+        const slotBook = await  slotBooking.find({UserId : userId});
+        slotMatch = new slotMatching();
+        slotMatch.Status = "queued";
+        slotMatch.Time = slotBook[0].Time;
+        slotMatch.Topic = slotBook[0].Topic;
+        slotMatch.LanguagePreffered = slotBook[0].LanguagePreffered;
+        slotMatch.AllotedRoomId = -1;
+        slotMatch.UserId = userId;
+        await slotMatch.save();
+    }
+    
+    else {
+   
+            if(isExist[0].Status  == "matched")
+            {
+                res.sendFile(__dirname+"/public/room.html");
+                return;
+            }
+    }
    
 
     const result =    await matching(slotMatch);
     // res.send(slotMatch);
     if(result != -1)
     {   
-        io.emit("matched","test2");
+        io.emit("matched",result.AllotedRoomId);
         res.sendFile(__dirname+"/public/room.html");
         // res.send("you are macthed with "+ result.UserId);
     }

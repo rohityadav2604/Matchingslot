@@ -34,6 +34,7 @@
         var socket = io.connect('localhost:3000');
         // console.log(socket);
         socket.on("matched",(data) => {
+            console.log(data);
             console.log("matched" + data);
         })
         socket.on("unmatched",(data) => {
