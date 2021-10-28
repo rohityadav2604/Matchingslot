@@ -20,8 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 
-app.get('/'  ,(req , res)=>{
-    res.send("basic server");
+app.get('/video' , (req , res)=>{
+    res.sendFile(__dirname + '/public/twilioindex.html');
 })
 
 
@@ -97,7 +97,8 @@ function check(req ,res  ,userid)
         {
             if(isExist[0].Status == "matched")
             {
-                res.send("http://127.0.0.1:5500/public/room.html");
+                
+                res.redirect(200 ,'http://localhost:3000/video')
                 clearInterval(set);
             }
         }
