@@ -31,7 +31,7 @@ module.exports = (function () {
     function getToken(req, res) {
         console.log("hello from getoken");
         const { identity } = req.query;
-
+         console.log(identity);
         // Create an access token which we will sign and return to the client,
         // containing the grant we just created.
         const token = new AccessToken(

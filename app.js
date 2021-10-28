@@ -21,6 +21,7 @@ app.use(express.urlencoded());
 
 
 app.get('/video' , (req , res)=>{
+    console.log("hello video");
     res.sendFile(__dirname + '/public/twilioindex.html');
 })
 
@@ -99,8 +100,7 @@ function check(req ,res  ,userid)
         {
             if(isExist[0].Status == "matched")
             {
-                
-                //res.redirect(200 ,`http://localhost:3000/video/#${userid}`)
+                res.redirect('/video');
                 clearInterval(set);
             }
         }
@@ -143,6 +143,7 @@ app.post("/join",async (req,res) => {
    // console.log(slotMatch);
     const result =  await matching(slotMatch);
     check( req , res ,userId);
+   
     ///res.redirect("http://127.0.0.1:5500/public/loading.html");
     
     

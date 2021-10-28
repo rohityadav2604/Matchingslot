@@ -29964,9 +29964,9 @@ to get a new one, but we\'ve run out of retries; returning it anyway.');
       //const { identity, roomName } = formData;
       var name = window.location.hash.replace("#", "");
 
-      let identity;
+      let identity ;
       let roomName;
-      identity;
+      identity = name;
       roomName = "room1";
 
       try {
