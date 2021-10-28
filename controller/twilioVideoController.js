@@ -36,9 +36,9 @@ module.exports = (function () {
         // Create an access token which we will sign and return to the client,
         // containing the grant we just created.
         const token = new AccessToken(
-            config.TWILIO_ACCOUNT_SID,
-            config.TWILIO_API_KEY,
-            config.TWILIO_API_SECRET,
+            "AC46d2e30ffd6f8028e4707d8f95677c4f",
+            "SK41fcf85a7da512f174ccae30f2a5c6af",
+            "VUndhbjyyEMADwtrm5aQ854rASKvKedf",
             { ttl: MAX_ALLOWED_SESSION_DURATION }
         );
 
