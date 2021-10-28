@@ -4,6 +4,7 @@ const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
 const socketIO = require('socket.io');
 const http = require('http')
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
@@ -32,16 +33,27 @@ app.post('/slotbook' , async(req , res)=>{
         // res.send("slotBook");
         console.log("hello i am form data");
         console.log(req);
+        
         const slotBook = new slotBooking();
         // console.log(req.body);
+        const email = req.body.email;
+        const token = jwt.sign(
+            {user_id : req.body.UserId,email},
+            "testKey123",
+            {
+                expiresIn : "2h",
+            }
+        )
+        console.log(token);
         slotBook.BookingId = req.body.BookingId;
         slotBook.UserId = req.body.UserId;
         slotBook.Topic = req.body.Topic;
         slotBook.SlotDateTime = req.body.SlotDateTime;
         slotBook.LanguagePreffered = req.body.LanguagePreffered;
         slotBook.Time = req.body.Time;
-
+        slotBook.jwtToken = token;
         await slotBook.save();
+        
         res.send("succesfully added");
 
     }
@@ -59,8 +71,22 @@ async function matching(slotMatch){
     console.log(matched);
     let f =0;
 
-  
-
+    // if(matched.length == 0)
+    // {
+    //     roomid = 12;
+    //     await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{AllotedRoomId : roomId});
+    //     io.on('connection', (socket)=>{
+    //         console.log('New user connected');
+    //         // socket.emit("matched","test");
+            
+    //         socket.join(roomId);
+            
+        
+    //         console.log(socket.id)
+             
+    //       });
+    // }
+    
     for(let i = 0;i<matched.length ;i++){
         
     
@@ -70,20 +96,20 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
-            io.on('connection', (socket)=>{
-                console.log('New user connected');
-                // socket.emit("matched","test");
-                roomId = 12
-                socket.join(roomId);
+            // io.on('connection', (socket)=>{
+            //     console.log('New user connected');
+            //     // socket.emit("matched","test");
+                
+            //     socket.join(matched[i].AllotedRoomId);
                 
             
-                console.log(socket.id)
+            //     console.log(socket.id)
                  
-              });
-            return matched[i];
+            //   });
+            return 1;
         }
     }
-
+    
     if(f==0)
     {   
         
@@ -92,6 +118,8 @@ async function matching(slotMatch){
     // res.send("there are no matches found");
 
 }
+
+ 
 
 app.post("/join",async (req,res) => {
     try {
@@ -111,33 +139,27 @@ app.post("/join",async (req,res) => {
         slotMatch.LanguagePreffered = slotBook[0].LanguagePreffered;
         slotMatch.AllotedRoomId = -1;
         slotMatch.UserId = userId;
+        slotMatch.jwtToken = slotBook[0].jwtToken;
         await slotMatch.save();
     }
     
     else {
    
-            if(isExist[0].Status  == "matched" && today.getHours() - isExist[0].Time < 1)
+            if(isExist[0].Status  == "matched")
             {
-                io.to(roomId).emit("matched",result.AllotedRoomId);
-               // res.sendFile(__dirname+"/public/room.html");
+                // io.to(isExist[0].AllotedRoomId).emit("matched",isExist[0].AllotedRoomId);
+               res.sendFile(__dirname+"/public/room.html");
                 return;
             }
     }
    
 
-    const result =    await matching(slotMatch);
-    // res.send(slotMatch);
-    if(result != -1)
-    {   
-        io.to(roomId).emit("matched",result.AllotedRoomId);
-        res.sendFile(__dirname+"/public/room.html");
-        // res.send("you are macthed with "+ result.UserId);
-    }
-    else{
-        io.to(roomId).emit("unmatched","test3");
-        res.sendFile(__dirname+"/public/loading.html");
-    //    res.send("No match found");
-    }
+    const result =  await matching(slotMatch);
+    
+
+    res.sendFile(__dirname+"/public/loading.html");
+
+    
 
     
     

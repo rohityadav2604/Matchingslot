@@ -8,6 +8,8 @@ const slotMatchingSchema = mongoose.Schema({
     AllotedRoomId : Number,
     UserId : Number
     ,
+  
+    jwtToken : String,
     createdAt : {
         type : Date,
         default : new Date()

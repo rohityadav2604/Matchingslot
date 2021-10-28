@@ -5,22 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.js" integrity="sha512-RT3IJsuoHZ2waemM8ccCUlPNdUuOn8dJCH46N3H2uZoY7swMn1Yn7s56SsE2UBMpjpndeZ91hm87TP1oU6ANjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Document</title>
 </head>
 <body>
     <h>Loading....</h>
-    <script>
-        var socket=io()
-        // make connection with server from user side
-        var socket = io.connect('localhost:3000');
-        // console.log(socket);
-        socket.on("matched",(data) => {
-            console.log(data);
-            window.location.replace("http://127.0.0.1:5500/Matchingslot/public/room.html");
-        })
-        socket.on("unmatched",(data) => {
-            console.log("unmatched" + data);
-        })
-        </script>    
+    <script src="./script.js"></script>
+   
 </body>
 </html>

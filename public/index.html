@@ -12,7 +12,7 @@
         <label for="">bookingid</label>
         <input type="number" name="BookingId">
         <label for="">userid</label>
-        <input type="number" name="UserId">
+        <input type="number" name="UserId" id = "userid">
         <label for="">topic</label>
         <input type="text" name="Topic">
         <label for="">slotdateTime</label>
@@ -21,30 +21,17 @@
         <input type="text" name="LanguagePreffered">
         <label>time</label>
         <input type="number" name="Time">
-        <button type="submit">submit</button>
+        <label>email</label>
+        <input type="text" name="email">
+        <button type="submit" , id = "join2">submit</button>
     </form>
     <form method = "post" action= "http://localhost:3000/join">
         <label >useridjoin</label>
         <input type="number" name="UserId">
-        <button type="submit">join</button>
+        <button type="submit" , id = "join">join</button>
     </form>
-    <script>
-        var socket=io()
-        // make connection with server from user side
-        var socket = io.connect('localhost:3000');
-        // console.log(socket);
-        socket.on('connect', function (data) {
-        socket.emit('storeClientInfo', { UserId:"abcd" });
-    });
-        socket.on("matched",(data) => {
-            console.log(data);
-            console.log("matched" + data);
-        })
-        socket.on("unmatched",(data) => {
-            console.log("unmatched" + data);
-        })
-        </script>    
-    
+  
+    <script src="./script.js"></script>
 </body>
 
 </html>

@@ -6,7 +6,8 @@ const slotBookingSchema = mongoose.Schema({
     Topic : String,
     SlotDateTime : String,
     LanguagePreffered : String,
-    Time : Number
+    Time : Number,
+    jwtToken : String
     ,
     createdAt : {
         type : Date,
