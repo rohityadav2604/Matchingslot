@@ -6,6 +6,7 @@ const socketIO = require('socket.io');
 const http = require('http')
 const jwt = require('jsonwebtoken');
 const cors = require("cors");
+const { Console } = require("console");
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
@@ -70,24 +71,7 @@ async function matching(slotMatch){
         
     const matched = await slotMatching.find({Time : slotMatch.Time,Topic : slotMatch.Topic,LanguagePreffered : slotMatch.LanguagePreffered});
     
-    let f =0;
-
-    // if(matched.length == 0)
-    // {
-    //     roomid = 12;
-    //     await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{AllotedRoomId : roomId});
-    //     io.on('connection', (socket)=>{
-    //         console.log('New user connected');
-    //         // socket.emit("matched","test");
-            
-    //         socket.join(roomId);
-            
-        
-    //         console.log(socket.id)
-             
-    //       });
-    // }
-    
+    let f =0;  
     for(let i = 0;i<matched.length ;i++){
         
     
@@ -97,31 +81,35 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
-            // io.on('connection', (socket)=>{
-            //     console.log('New user connected');
-            //     // socket.emit("matched","test");
-                
-            //     socket.join(matched[i].AllotedRoomId);
-                
             
-            //     console.log(socket.id)
-                 
-            //   });
             return 1;
         }
     }
-    
-    if(f==0)
-    {   
-        
-        return -1;
-    }
-    // res.send("there are no matches found");
-
+    return -1;
 }
 
- 
+ app.post('/check' , async(req , res)=>{
+     console.log("hello");;
+   var set = setInterval(async()=>{
+   
+    console.log("hello");
+    const userId = req.body.UserId;
+    console.log(userId);
+    const isExist = await slotMatching.find({UserId : userId});
+    if(isExist.length>0)
+    {
+        if(isExist[0].Status == "matched")
+        {
+            res.send("http://127.0.0.1:5500/public/room.html");
+            clearInterval(set);
+        }
+    }
 
+   } , 10000)
+
+ })
+
+ 
 app.post("/join",async (req,res) => {
     try {
         // console.log(req)
@@ -129,7 +117,7 @@ app.post("/join",async (req,res) => {
     console.log(userId);
     
     const isExist = await slotMatching.find({UserId : userId});
-
+    let slotMatch;
     if(isExist.length == 0)
     {
         const slotBook = await  slotBooking.find({UserId : userId});
@@ -143,29 +131,21 @@ app.post("/join",async (req,res) => {
         slotMatch.jwtToken = slotBook[0].jwtToken;
         await slotMatch.save();
     }
-    
     else {
-   
+            slotMatch = isExist[0];
             if(isExist[0].Status  == "matched")
             {
                 // io.to(isExist[0].AllotedRoomId).emit("matched",isExist[0].AllotedRoomId);
-               res.sendFile(__dirname+"/public/room.html");
+               res.send("http://127.0.0.1:5500/public/room.html");
                 return;
             }
     }
-   
-
+   // console.log(slotMatch);
     const result =  await matching(slotMatch);
     
-
-    res.sendFile(__dirname+"/public/loading.html");
-
+    res.send("http://127.0.0.1:5500/public/loading.html");
     
-
-    
-    
-
-    
+   
     // res.send("successfully added to matching");
     }
     catch(err) {

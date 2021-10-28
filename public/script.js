@@ -1,23 +1,30 @@
+let join  = document.querySelector("#join")
+var userid;
+join.addEventListener("click" , ()=>{
+   userid = document.querySelector("#joinuserid").value;
+   //document.querySelector("#loading").innerHTML = userid;
+    sendrequest(userid)
+})
 
-
-let userid;
-let useridjoin = document.querySelector("#joinuserid");
-if(useridjoin!=null)
+ function sendrequest(userid)
 {
-    useridjoin.addEventListener("input", ()=>{
     
-        userid = useridjoin.value;   
-        sendrequest(userid);
-  })
- 
+    // console.log(e);
+    console.log(userid)
+    axios.post("http://localhost:3000/join" , {UserId : userid}).then(async (res)=>{
+        window.location = res.data;
+   })
 
 }
 
-async function sendrequest(userid)
-{ 
-       
-       setInterval(async () => {
-           console.log("interval")
-           await axios.post("http://localhost:3000/join" , {UserId : userid});
-       }, 10000);
+function init()
+{
+
+   //let userid = document.querySelector("#loading").innerHTML;
+    axios.post("http://localhost:3000/check" , {UserId : userid} ).then((res)=>{
+        window.location = res.data;
+     
+    }) 
+   
 }
+
