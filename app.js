@@ -87,27 +87,24 @@ async function matching(slotMatch){
     }
     return -1;
 }
-
- app.post('/check' , async(req , res)=>{
-     console.log("hello");;
-   var set = setInterval(async()=>{
+function check(req ,res  ,userid)
+{
+    var set = setInterval(async()=>{
    
-    console.log("hello");
-    const userId = req.body.UserId;
-    console.log(userId);
-    const isExist = await slotMatching.find({UserId : userId});
-    if(isExist.length>0)
-    {
-        if(isExist[0].Status == "matched")
+        console.log("heloo");
+        const isExist = await slotMatching.find({UserId : userid});
+        if(isExist.length>0)
         {
-            res.send("http://127.0.0.1:5500/public/room.html");
-            clearInterval(set);
+            if(isExist[0].Status == "matched")
+            {
+                res.send("http://127.0.0.1:5500/public/room.html");
+                clearInterval(set);
+            }
         }
-    }
-
-   } , 10000)
-
- })
+    
+       } , 10000)
+    
+}
 
  
 app.post("/join",async (req,res) => {
@@ -142,8 +139,9 @@ app.post("/join",async (req,res) => {
     }
    // console.log(slotMatch);
     const result =  await matching(slotMatch);
+    check( req , res ,userId);
+    ///res.redirect("http://127.0.0.1:5500/public/loading.html");
     
-    res.send("http://127.0.0.1:5500/public/loading.html");
     
    
     // res.send("successfully added to matching");

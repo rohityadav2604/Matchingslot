@@ -15,16 +15,12 @@ join.addEventListener("click" , ()=>{
         window.location = res.data;
    })
 
-}
-
-function init()
-{
-
-   //let userid = document.querySelector("#loading").innerHTML;
-    axios.post("http://localhost:3000/check" , {UserId : userid} ).then((res)=>{
-        window.location = res.data;
-     
-    }) 
+  let loading = document.createElement('div');
+  loading.innerHTML = "loading.....";
+  document.body.appendChild(loading);
    
+
 }
+
+
 
