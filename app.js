@@ -21,6 +21,10 @@ app.get('/'  ,(req , res)=>{
     res.send("basic server");
 })
 
+
+
+
+
 app.post('/slotbook' , async(req , res)=>{
     //save object;
     try{
