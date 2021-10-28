@@ -5,6 +5,7 @@ const slotMatching = require("./models/slotMatching.js");
 const socketIO = require('socket.io');
 const http = require('http')
 const jwt = require('jsonwebtoken');
+const cors = require("cors");
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
@@ -13,7 +14,7 @@ let server = http.createServer(app)
 let io = socketIO(server)
 var roomId ;
 var today = new Date();
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -31,8 +32,8 @@ app.post('/slotbook' , async(req , res)=>{
     try{
         
         // res.send("slotBook");
-        console.log("hello i am form data");
-        console.log(req);
+        
+        
         
         const slotBook = new slotBooking();
         // console.log(req.body);
@@ -44,7 +45,7 @@ app.post('/slotbook' , async(req , res)=>{
                 expiresIn : "2h",
             }
         )
-        console.log(token);
+       // console.log(token);
         slotBook.BookingId = req.body.BookingId;
         slotBook.UserId = req.body.UserId;
         slotBook.Topic = req.body.Topic;
@@ -68,7 +69,7 @@ app.post('/slotbook' , async(req , res)=>{
 async function matching(slotMatch){
         
     const matched = await slotMatching.find({Time : slotMatch.Time,Topic : slotMatch.Topic,LanguagePreffered : slotMatch.LanguagePreffered});
-    console.log(matched);
+    
     let f =0;
 
     // if(matched.length == 0)

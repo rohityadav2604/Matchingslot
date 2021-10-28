@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.js" integrity="sha512-RT3IJsuoHZ2waemM8ccCUlPNdUuOn8dJCH46N3H2uZoY7swMn1Yn7s56SsE2UBMpjpndeZ91hm87TP1oU6ANjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>index</title>
 </head>
 <body>
@@ -25,9 +26,9 @@
         <input type="text" name="email">
         <button type="submit" , id = "join2">submit</button>
     </form>
-    <form method = "post" action= "http://localhost:3000/join">
+    <form method = "post" , action="http://localhost:3000/join">
         <label >useridjoin</label>
-        <input type="number" name="UserId">
+        <input type="number" name="UserId" , id="joinuserid">
         <button type="submit" , id = "join">join</button>
     </form>
   
