@@ -33,6 +33,9 @@
         // make connection with server from user side
         var socket = io.connect('localhost:3000');
         // console.log(socket);
+        socket.on('connect', function (data) {
+        socket.emit('storeClientInfo', { UserId:"abcd" });
+    });
         socket.on("matched",(data) => {
             console.log(data);
             console.log("matched" + data);
