@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 
-app.get('/video' , (req , res)=>{
+app.get(`/video` , (req , res)=>{
     console.log("hello video");
     res.sendFile(__dirname + '/public/twilioindex.html');
 })
@@ -100,12 +100,13 @@ function check(req ,res  ,userid)
         {
             if(isExist[0].Status == "matched")
             {
-                res.redirect('/video');
+                var string = encodeURIComponent(userid);
+                res.redirect(`/video#` + string);
                 clearInterval(set);
             }
         }
     
-       } , 10000)
+       } , 120000)
     
 }
 
