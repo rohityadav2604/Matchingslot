@@ -10,7 +10,7 @@ const { Console } = require("console");
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
-
+const twilioVideoController = require("./controller/twilioVideoController")
 let server = http.createServer(app)
 let io = socketIO(server)
 var roomId ;
@@ -23,6 +23,8 @@ app.use(express.urlencoded());
 app.get('/video' , (req , res)=>{
     res.sendFile(__dirname + '/public/twilioindex.html');
 })
+
+app.get('/video/token' , twilioVideoController.getToken);
 
 
 
@@ -98,7 +100,7 @@ function check(req ,res  ,userid)
             if(isExist[0].Status == "matched")
             {
                 
-                res.redirect(200 ,'http://localhost:3000/video')
+                //res.redirect(200 ,`http://localhost:3000/video/#${userid}`)
                 clearInterval(set);
             }
         }

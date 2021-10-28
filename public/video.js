@@ -29966,16 +29966,16 @@ to get a new one, but we\'ve run out of retries; returning it anyway.');
 
       let identity;
       let roomName;
-      identity = name;
+      identity;
       roomName = "room1";
 
       try {
         // Fetch an AccessToken to join the Room.
         const response = await fetch(`/video/token?identity=${identity}`);
-
+    
         // Extract the AccessToken from the Response.
         const token = await response.text();
-
+         console.log(token);
         // Add the specified audio device ID to ConnectOptions.
         connectOptions.audio = { deviceId: { exact: deviceIds.audio } };
 
@@ -30306,12 +30306,12 @@ to get a new one, but we\'ve run out of retries; returning it anyway.');
 
       // Make the Room available in the JavaScript console for debugging.
       window.room = room;
-      room.localParticipant.audioTracks.forEach(track => {
-        track.track.disable();
-       }); 
-       room.localParticipant.videoTracks.forEach(track => {
-        track.track.disable();
-       }); 
+      // room.localParticipant.audioTracks.forEach(track => {
+      //   track.track.disable();
+      //  }); 
+      //  room.localParticipant.videoTracks.forEach(track => {
+      //   track.track.disable();
+      //  }); 
       
       // Handle the LocalParticipant's media.
       participantConnected(room.localParticipant, room);

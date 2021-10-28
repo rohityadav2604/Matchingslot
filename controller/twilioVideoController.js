@@ -2,8 +2,6 @@ module.exports = (function () {
 
     var retVal = {}
     var path = require("path");
-    var slotService = require('../services/slotService');
-    const config = require("../config.json");
     const { jwt: { AccessToken } } = require('twilio');
 
     const VideoGrant = AccessToken.VideoGrant;
@@ -31,6 +29,7 @@ module.exports = (function () {
     }
     }
     function getToken(req, res) {
+        console.log("hello from getoken");
         const { identity } = req.query;
 
         // Create an access token which we will sign and return to the client,
