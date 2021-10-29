@@ -20,7 +20,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
 
-
+io.on('connection', (socket)=>{
+    console.log('New user connected');
+    // socket.emit("matched","test");
+    // map.set(userId,socket.id);
+    console.log("express" , socket.id);
+  });
 
 app.get(`/video` , (req , res)=>{
     console.log("hello video");
@@ -134,10 +139,19 @@ app.post("/join",async (req,res) => {
     const userId = req.body.UserId;
     console.log(userId);
     
+    
+
     const isExist = await slotMatching.find({UserId : userId});
     let slotMatch;
     if(isExist.length == 0)
-    {
+    {   
+
+        io.on('connection', (socket)=>{
+            console.log('New user connected');
+            // socket.emit("matched","test");
+            map.set(userId,socket.id);
+            console.log(map.get(userId));
+          });
         const slotBook = await  slotBooking.find({UserId : userId});
         slotMatch = new slotMatching();
         slotMatch.Status = "queued";
@@ -147,12 +161,7 @@ app.post("/join",async (req,res) => {
         slotMatch.AllotedRoomId = -1;
         slotMatch.UserId = userId;
         slotMatch.jwtToken = slotBook[0].jwtToken;
-        io.on('connection', (socket)=>{
-            console.log('New user connected');
-            // socket.emit("matched","test");
-            map.set(userId,socket.id);
-            console.log(map.get(userId));
-          });
+        
         await slotMatch.save();
     }
     else {
