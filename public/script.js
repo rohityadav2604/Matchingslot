@@ -19,15 +19,42 @@
    
 
 // }
-
-
 let join = document.querySelector("#join");
-join.addEventListener("submit" , (evt)=>{
-    evt.preventDefault();
-  let loading = document.createElement('div');
-  loading.innerHTML = "loading.....";
-  document.body.appendChild(loading);
-})
+join.addEventListener("click" , makesearch);
+async function makesearch()
+{
+  console.log("makesearch");
+  let div = document.createElement('div');
+  div.innerHTML = "loading....";
+  document.body.appendChild(div);
+  let userid = document.querySelector("#useridjoin").value;
+  const res = await axios.post("http://localhost:3000/join"  , {UserId : userid});
+  if(res.data == "matched")
+  {
+    window.location = `/video#${userid}`;
+  } 
+  else
+  {
+    interval(userid);
+  }
+  
+  
+}
+async function interval(userid)
+{
+   console.log("i am in interval");
+  var int = setInterval(async ()=>{
+    const res = await axios.post("http://localhost:3000/join"  , {UserId : userid});
+    if(res.data == "matched")
+    {
+       window.location = `/video#${userid}`;
+       clearInterval(int)
+    } 
+  }, 30000)
+  
+  
+ 
+}
 
 
 

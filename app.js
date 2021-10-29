@@ -110,6 +110,21 @@ function check(req ,res  ,userid)
     
 }
 
+async function check2(req , res)
+{
+
+    const isExist = await slotMatching.find({UserId : userid});
+    if(isExist.length>0)
+    {
+        if(isExist[0].Status == "matched")
+        {
+            var string = encodeURIComponent(userid);
+            res.redirect(`/video#` + string);
+            clearInterval(set);
+        }
+    }
+}
+
  
 app.post("/join",async (req,res) => {
     try {
@@ -133,17 +148,31 @@ app.post("/join",async (req,res) => {
         await slotMatch.save();
     }
     else {
+            console.log("matched");
             slotMatch = isExist[0];
             if(isExist[0].Status  == "matched")
             {
                 // io.to(isExist[0].AllotedRoomId).emit("matched",isExist[0].AllotedRoomId);
-               res.send("http://127.0.0.1:5500/public/room.html");
-                return;
+            //     var string = encodeURIComponent(userId);
+            //    // res.redirect(`/video#` + string);
+            //    res.redirect('/video');
+               //res.("http://127.0.0.1:5500/public/room.html");
+               res.send("matched");
+                
             }
     }
    // console.log(slotMatch);
     const result =  await matching(slotMatch);
-    check( req , res ,userId);
+    if(result == 1)
+    {
+        res.send("matched");
+    }
+    else
+    {
+        res.send("notmatched");
+    }
+    
+  //  check( req , res ,userId);
    
     ///res.redirect("http://127.0.0.1:5500/public/loading.html");
     
@@ -155,7 +184,8 @@ app.post("/join",async (req,res) => {
         console.log(err);
     }
 })
-mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
+//mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://rohit:123@cluster0.jabnw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 .then(console.log("connected succesfully"))
 .catch((err)=>{console.log(err)});
 server.listen(3000);
