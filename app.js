@@ -13,11 +13,13 @@ app.use(express.static(__dirname+"/public"));
 const twilioVideoController = require("./controller/twilioVideoController")
 let server = http.createServer(app)
 let io = socketIO(server)
+const map = new Map();
 var roomId ;
 var today = new Date();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
+
 
 
 app.get(`/video` , (req , res)=>{
@@ -145,6 +147,12 @@ app.post("/join",async (req,res) => {
         slotMatch.AllotedRoomId = -1;
         slotMatch.UserId = userId;
         slotMatch.jwtToken = slotBook[0].jwtToken;
+        io.on('connection', (socket)=>{
+            console.log('New user connected');
+            // socket.emit("matched","test");
+            map.set(userId,socket.id);
+            console.log(map.get(userId));
+          });
         await slotMatch.save();
     }
     else {
@@ -185,7 +193,7 @@ app.post("/join",async (req,res) => {
     }
 })
 //mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
-mongoose.connect("mongodb+srv://rohit:123@cluster0.jabnw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
 .then(console.log("connected succesfully"))
 .catch((err)=>{console.log(err)});
 server.listen(3000);
