@@ -9,7 +9,7 @@
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <title>index</title>
 </head>
-<body>
+<body onload = "init()">
     <form method="post" action="http://localhost:3000/slotbook">
         <label for="">bookingid</label>
         <input type="number" name="BookingId">
@@ -27,7 +27,7 @@
         <input type="text" name="email">
         <button type="submit" >submit</button>
     </form>
-    <!-- <form method = "post" action= "http://localhost:3000/join" onsubmit="return makeSearch()">
+    <!-- <form method = "post" action= "http://localhost:3000/join">
         <label >useridjoin</label>
         <input type="number" name="UserId">
         <button type="submit" id = "join">join</button>
@@ -36,9 +36,39 @@
         <label >useridjoin</label>
         <input type="number" name="UserId" , id="useridjoin">
         <button  id = "join">join</button>
-    <script>
-        
-        </script>    
+        <script>
+            function init()
+            {
+            // console.log("sadasd");
+            var socket=io()
+             // make connection with server from user side
+             console.log("socket script");
+             socket.connect('http://localhost:3000');
+             // var scoket = io.connect('localhost:3000');
+             socket.on('connect',function() {
+           console.log('Client has connected to the server!');
+           
+         });
+
+        let jn = document.querySelector("#join");
+
+        jn.addEventListener("click",(e) => {
+            e.preventDefault();
+            let uid = document.querySelector("#useridjoin").value;
+            socket.emit("userId",uid);
+        })
+
+         socket.on('message' , (data) => {
+
+             console.log(data);
+            //  console.log(userid);
+            window.location = `/video#${data}`;
+         })
+        //  console.log(uid.value);
+         
+             console.log(socket);
+        }
+        </script>
     
     <script src="./script.js"></script>
     

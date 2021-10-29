@@ -19,20 +19,19 @@
    
 
 // }
-var socket=io()
-        // make connection with server from user side
-        var scoket = io.connect('localhost:3000');
-        console.log(socket);
-        
+
+
 let join = document.querySelector("#join");
 join.addEventListener("click" , makesearch);
 async function makesearch()
 { 
+
   console.log("makesearch");
   let div = document.createElement('div');
   div.innerHTML = "loading....";
   document.body.appendChild(div);
   let userid = document.querySelector("#useridjoin").value;
+  console.log(userid);
   const res = await axios.post("http://localhost:3000/join"  , {UserId : userid});
   if(res.data == "matched")
   {
