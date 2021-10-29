@@ -6,7 +6,7 @@ const socketIO = require('socket.io');
 const http = require('http')
 const jwt = require('jsonwebtoken');
 const cors = require("cors");
-const { Console } = require("console");
+
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
@@ -32,15 +32,11 @@ app.get('/video/token' , twilioVideoController.getToken);
 
 
 app.post('/slotbook' , async(req , res)=>{
-    //save object;
+    
     try{
         
-        // res.send("slotBook");
-        
-        
-        
         const slotBook = new slotBooking();
-        // console.log(req.body);
+      
         const email = req.body.email;
         const token = jwt.sign(
             {user_id : req.body.UserId,email},
@@ -49,7 +45,7 @@ app.post('/slotbook' , async(req , res)=>{
                 expiresIn : "2h",
             }
         )
-       // console.log(token);
+       
         slotBook.BookingId = req.body.BookingId;
         slotBook.UserId = req.body.UserId;
         slotBook.Topic = req.body.Topic;
