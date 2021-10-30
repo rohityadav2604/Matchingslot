@@ -19,13 +19,24 @@ var today = new Date();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
-
+// var socket_id = [];
+var idx = 0;
+// var sck ;
 io.on('connection', (socket)=>{
+    // console.log(data);
     console.log('New user connected');
-    // socket.emit("matched","test");
-    // map.set(userId,socket.id);
     console.log("express" , socket.id);
-  });
+    // socket_id.push(socket.id);
+    socket.on('userId',(data) => {
+        // console.log("uid");
+        // console.log("data ",data)
+        map.set(data,socket.id);
+        // console.log(map.get(data));
+    })
+    
+});
+
+
 
 app.get(`/video` , (req , res)=>{
     console.log("hello video");
@@ -41,6 +52,12 @@ app.get('/video/token' , twilioVideoController.getToken);
 app.post('/slotbook' , async(req , res)=>{
     
     try{
+<<<<<<< HEAD
+=======
+        // res.send("slotBook");
+        
+        
+>>>>>>> 0447c9cb39fc5eb7130d38e5413518dfdec2ee8b
         
         const slotBook = new slotBooking();
       
@@ -87,7 +104,12 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
-            
+            console.log(slotMatch.socketId)
+            console.log(matched[i].socketId)
+            // console.log(socket_id[matched[i].idx - 1]);
+            // console.log(socket_id[slotMatch.idx -1 ]);
+            io.to(slotMatch.socketId).to(matched[i].socketId).emit('message', matched[i].UserId);
+            // io.to().emit('message', 'you are matched');
             return 1;
         }
     }
@@ -130,6 +152,8 @@ async function check2(req , res)
 
  
 app.post("/join",async (req,res) => {
+    
+    
     try {
         // console.log(req)
     const userId = req.body.UserId;
@@ -141,13 +165,11 @@ app.post("/join",async (req,res) => {
     let slotMatch;
     if(isExist.length == 0)
     {   
-
-        io.on('connection', (socket)=>{
-            console.log('New user connected');
-            // socket.emit("matched","test");
-            map.set(userId,socket.id);
-            console.log(map.get(userId));
-          });
+        console.log("uid is ",map.get(userId));
+        // idx ++;
+        // console.log(idx);
+        // console.log(socket_id[socket_id.length -1]);
+        
         const slotBook = await  slotBooking.find({UserId : userId});
         slotMatch = new slotMatching();
         slotMatch.Status = "queued";
@@ -157,19 +179,19 @@ app.post("/join",async (req,res) => {
         slotMatch.AllotedRoomId = -1;
         slotMatch.UserId = userId;
         slotMatch.jwtToken = slotBook[0].jwtToken;
-        
+        slotMatch.socketId = map.get(userId);
+        // slotMatch.idx = idx;
         await slotMatch.save();
     }
     else {
-            console.log("matched");
+            // console.log("matched");
             slotMatch = isExist[0];
+            
+           
+
             if(isExist[0].Status  == "matched")
             {
-                // io.to(isExist[0].AllotedRoomId).emit("matched",isExist[0].AllotedRoomId);
-            //     var string = encodeURIComponent(userId);
-            //    // res.redirect(`/video#` + string);
-            //    res.redirect('/video');
-               //res.("http://127.0.0.1:5500/public/room.html");
+            
                res.send("matched");
                 
             }
