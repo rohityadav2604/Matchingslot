@@ -51,22 +51,32 @@
          });
 
         let jn = document.querySelector("#join");
-
+        var uid;
         jn.addEventListener("click",(e) => {
             e.preventDefault();
-            let uid = document.querySelector("#useridjoin").value;
+             uid = document.querySelector("#useridjoin").value;
             socket.emit("userId",uid);
         })
 
-         socket.on('message' , (data) => {
+         socket.on('message' , async (data) => {
 
              console.log(data);
+             if(data.p1 == uid)
+             {
+                 window.location = '/video#'+data.p1;
+             }
+             else
+             {
+                window.location = '/video#'+data.p2;
+             }
+
+
             //  console.log(userid);
-            window.location = `/video#${data}`;
+           // window.location = `/video#${data}`;
          })
         //  console.log(uid.value);
          
-             console.log(socket);
+          //   console.log(socket);
         }
         </script>
     

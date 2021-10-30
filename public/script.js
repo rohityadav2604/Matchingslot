@@ -33,14 +33,14 @@ async function makesearch()
   let userid = document.querySelector("#useridjoin").value;
   console.log(userid);
   const res = await axios.post("http://localhost:3000/join"  , {UserId : userid});
-  if(res.data == "matched")
-  {
-    window.location = `/video#${userid}`;
-  } 
-  else
-  {
-    // interval(userid);
-  }
+  // if(res.data == "matched")
+  // {
+  //   window.location = `/video#${userid}`;
+  // } 
+  // else
+  // {
+  //   // interval(userid);
+  // }
   
   
 }
@@ -49,11 +49,11 @@ async function interval(userid)
    console.log("i am in interval");
   var int = setInterval(async ()=>{
     const res = await axios.post("http://localhost:3000/join"  , {UserId : userid});
-    if(res.data == "matched")
-    {
-       window.location = `/video#${userid}`;
-       clearInterval(int)
-    } 
+    // if(res.data == "matched")
+    // {
+    //    window.location = `/video#${userid}`;
+    //    clearInterval(int)
+    // } 
   }, 30000)
   
   

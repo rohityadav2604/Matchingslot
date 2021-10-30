@@ -19,20 +19,21 @@ var today = new Date();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
+//app.set('socketio', io);
 // var socket_id = [];
 var idx = 0;
 // var sck ;
 io.on('connection', (socket)=>{
     // console.log(data);
     console.log('New user connected');
-    console.log("express" , socket.id);
-    // socket_id.push(socket.id);
-    socket.on('userId',(data) => {
-        // console.log("uid");
-        // console.log("data ",data)
-        map.set(data,socket.id);
-        // console.log(map.get(data));
-    })
+    // console.log("express" , socket.id);
+    // // socket_id.push(socket.id);
+    // socket.on('userId',(data) => {
+    //     // console.log("uid");
+    //     // console.log("data ",data)
+    //     map.set(data,socket.id);
+    //     // console.log(map.get(data));
+    // })
     
 });
 
@@ -52,12 +53,6 @@ app.get('/video/token' , twilioVideoController.getToken);
 app.post('/slotbook' , async(req , res)=>{
     
     try{
-<<<<<<< HEAD
-=======
-        // res.send("slotBook");
-        
-        
->>>>>>> 0447c9cb39fc5eb7130d38e5413518dfdec2ee8b
         
         const slotBook = new slotBooking();
       
@@ -104,11 +99,15 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
-            console.log(slotMatch.socketId)
-            console.log(matched[i].socketId)
+            // console.log(slotMatch.socketId)
+            // console.log(matched[i].socketId)
+           // io.send({P1 :matched[i].userId , P2:slotMatch.UserId});
+           io.send({p1:slotMatch.UserId , 
+            p2 : matched[i].UserId
+        });
             // console.log(socket_id[matched[i].idx - 1]);
             // console.log(socket_id[slotMatch.idx -1 ]);
-            io.to(slotMatch.socketId).to(matched[i].socketId).emit('message', matched[i].UserId);
+           // io.to(slotMatch.socketId).to(matched[i].socketId).emit('message', matched[i].UserId);
             // io.to().emit('message', 'you are matched');
             return 1;
         }
@@ -165,7 +164,7 @@ app.post("/join",async (req,res) => {
     let slotMatch;
     if(isExist.length == 0)
     {   
-        console.log("uid is ",map.get(userId));
+       // console.log("uid is ",map.get(userId));
         // idx ++;
         // console.log(idx);
         // console.log(socket_id[socket_id.length -1]);
@@ -220,7 +219,9 @@ app.post("/join",async (req,res) => {
     }
 })
 //mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
-mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
+//mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://rohit:123@cluster0.jabnw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+
 .then(console.log("connected succesfully"))
 .catch((err)=>{console.log(err)});
 server.listen(3000);
