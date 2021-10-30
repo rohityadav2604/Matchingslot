@@ -2,42 +2,33 @@ const express = require("express");
 const mongoose = require("mongoose");
 const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
-const socketIO = require('socket.io');
-const http = require('http')
+
 const jwt = require('jsonwebtoken');
 const cors = require("cors");
-
+const SocketServer = require('ws').Server;
 
 const app = express();
 app.use(express.static(__dirname+"/public"));
 const twilioVideoController = require("./controller/twilioVideoController")
-let server = http.createServer(app)
-let io = socketIO(server)
+
 const map = new Map();
 var roomId ;
 var today = new Date();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
-//app.set('socketio', io);
-// var socket_id = [];
-var idx = 0;
-// var sck ;
-io.on('connection', (socket)=>{
-    // console.log(data);
-    console.log('New user connected');
-    // console.log("express" , socket.id);
-    // // socket_id.push(socket.id);
-    // socket.on('userId',(data) => {
-    //     // console.log("uid");
-    //     // console.log("data ",data)
-    //     map.set(data,socket.id);
-    //     // console.log(map.get(data));
-    // })
-    
-});
+// mongoose.connect("mongodb+srv://rohit:123@cluster0.jabnw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
 
+.then(console.log("connected succesfully"))
+.catch((err)=>{console.log(err)});
+let server = app.listen(3000,()=>{console.log("server started")});
+const wss = new SocketServer({ server });
 
+wss.on('connection', (ws) => {
+    console.log("user connected ");
+   
+})
 
 app.get(`/video` , (req , res)=>{
     console.log("hello video");
@@ -99,16 +90,9 @@ async function matching(slotMatch){
             console.log("matched");
             await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
             await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
-            // console.log(slotMatch.socketId)
-            // console.log(matched[i].socketId)
-           // io.send({P1 :matched[i].userId , P2:slotMatch.UserId});
-           io.send({p1:slotMatch.UserId , 
-            p2 : matched[i].UserId
-        });
-            // console.log(socket_id[matched[i].idx - 1]);
-            // console.log(socket_id[slotMatch.idx -1 ]);
-           // io.to(slotMatch.socketId).to(matched[i].socketId).emit('message', matched[i].UserId);
-            // io.to().emit('message', 'you are matched');
+
+        wss.clients.forEach(client => client.send(JSON.stringify({p1:slotMatch.UserId ,p2 : matched[i].UserId })));
+
             return 1;
         }
     }
@@ -163,12 +147,7 @@ app.post("/join",async (req,res) => {
     const isExist = await slotMatching.find({UserId : userId});
     let slotMatch;
     if(isExist.length == 0)
-    {   
-       // console.log("uid is ",map.get(userId));
-        // idx ++;
-        // console.log(idx);
-        // console.log(socket_id[socket_id.length -1]);
-        
+    {    
         const slotBook = await  slotBooking.find({UserId : userId});
         slotMatch = new slotMatching();
         slotMatch.Status = "queued";
@@ -179,11 +158,9 @@ app.post("/join",async (req,res) => {
         slotMatch.UserId = userId;
         slotMatch.jwtToken = slotBook[0].jwtToken;
         slotMatch.socketId = map.get(userId);
-        // slotMatch.idx = idx;
         await slotMatch.save();
     }
     else {
-            // console.log("matched");
             slotMatch = isExist[0];
             
            
@@ -195,7 +172,6 @@ app.post("/join",async (req,res) => {
                 
             }
     }
-   // console.log(slotMatch);
     const result =  await matching(slotMatch);
     if(result == 1)
     {
@@ -206,22 +182,10 @@ app.post("/join",async (req,res) => {
         res.send("notmatched");
     }
     
-  //  check( req , res ,userId);
-   
-    ///res.redirect("http://127.0.0.1:5500/public/loading.html");
-    
-    
-   
-    // res.send("successfully added to matching");
+
     }
     catch(err) {
         console.log(err);
     }
 })
-//mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
-//mongoose.connect("mongodb+srv://salik:123@cluster0.mzkzr.mongodb.net/memories?retryWrites=true&w=majority")
-mongoose.connect("mongodb+srv://rohit:123@cluster0.jabnw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 
-.then(console.log("connected succesfully"))
-.catch((err)=>{console.log(err)});
-server.listen(3000);
