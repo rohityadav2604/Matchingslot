@@ -9,7 +9,7 @@
     <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
     <title>index</title>
 </head>
-<body onload = "init()">
+<body>
     <form method="post" action="http://localhost:3000/slotbook">
         <label for="">bookingid</label>
         <input type="number" name="BookingId">
@@ -36,36 +36,7 @@
         <label >useridjoin</label>
         <input type="number" name="UserId" , id="useridjoin">
         <button  id = "join">join</button>
-        <script>
-            function init()
-            {
-                var socket = new WebSocket("ws://localhost:3000");
-                socket.onopen = function(event) {
-                console.log("Connection established");
-                // console.log(data);
-            }
-            socket.onmessage = function(e){
-                console.log("msg");
-                console.log(e.data);
-            var server_message = e.data;
-            console.log(typeof(server_message))
-            let jsonMsg = JSON.parse(server_message)
-            console.log(jsonMsg);
-            let uid = document.querySelector("#useridjoin").value;
-            
-            // console.log(uid);
-
-            if(jsonMsg.p1 == uid){
-            window.location = '/video#'+jsonMsg.p1;
-            }
-            
-            if(jsonMsg.p2 == uid){
-            window.location = '/video#'+jsonMsg.p2;
-            }
         
-        }
-            }
-        </script>
     
     <script src="./script.js"></script>
     

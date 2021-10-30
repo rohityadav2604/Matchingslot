@@ -1,25 +1,30 @@
-// let join  = document.querySelector("#join")
-// var userid;
-// join.addEventListener("click" , ()=>{
-//    userid = document.querySelector("#joinuserid").value;
-//    //document.querySelector("#loading").innerHTML = userid;
-//     sendrequest(userid)
-// })
 
-//  function sendrequest(userid)
-// {
-    
-//     // console.log(e);
-//     console.log(userid)
-//     axios.post("http://localhost:3000/join" , {UserId : userid}).then(async (res)=>{
-//         window.location = res.data;
-//    })
+                var socket = new WebSocket("ws://localhost:3000");
+                socket.onopen = function(event) {
+                console.log("Connection established");
+                // console.log(data);
+            }
+            socket.onmessage = function(e){
+                console.log("msg");
+                console.log(e.data);
+            var server_message = e.data;
+            console.log(typeof(server_message))
+            let jsonMsg = JSON.parse(server_message)
+            console.log(jsonMsg);
+            let uid = document.querySelector("#useridjoin").value;
+            
+            // console.log(uid);
 
-
-   
-
-// }
-
+            if(jsonMsg.p1 == uid){
+            window.location = '/video#'+jsonMsg.p1;
+            }
+            
+            if(jsonMsg.p2 == uid){
+            window.location = '/video#'+jsonMsg.p2;
+            }
+        
+        }
+            
 
 let join = document.querySelector("#join");
 join.addEventListener("click" , makesearch);
