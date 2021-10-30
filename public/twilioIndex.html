@@ -1,392 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-
-    <link rel="stylesheet" href="/css/editor.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Firebse -->
-    <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
-    <!-- Ace -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/theme-textmate.js"></script>
-    <!-- Firepad -->
-    <link rel="stylesheet" href="https://firepad.io/releases/v1.5.10/firepad.css" />
-    <script src="https://firepad.io/releases/v1.5.10/firepad.min.js"></script>
-    <!--Multiple language ace-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ext-language_tools.min.js"
-        integrity="sha512-S7Whi8oQAQu/MK6AhBWufIJIyOvqORj+/1YDM9MaHeRalsZjzyYS7Usk4fsh+6J77PUhuk5v/BxaMDXRdWd1KA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.tutorialjinni.com/split.js/1.6.4/split.min.js"></script>
-</head>
-
-<body class="">
-    <div id="openEditor" class="row">
-        <div id="leftSection" class="col-9 split pe-0">
-
-            <div id="split-0" class="bg-light">
-                <!-- Question -->
-                <div class="header bold">Question</div>
-                <div class="body quesContent">
-
-                    <div class="myCard">
-                        <h5 class="card-title">Statement</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.Some quick example text to build on the card title and make up the bulk of
-                                    the card's
-                                    content.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="myCard">
-                        <h5 class="card-title">Input format</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text .</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="myCard">
-                        <h5 class="card-title">Output format</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text .</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="myCard">
-                        <h5 class="card-title">Constraints</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text .</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="myCard">
-                        <h5 class="card-title">Sample Input</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text .</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="myCard">
-                        <h5 class="card-title">Sample Output</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-text">Some quick example text .</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- Question -->
-            </div>
-
-            <div id="split-1" class="bg-light">
-
-                <div class="header">
-                    <div class="options editorOptions">
-                        <div>
-                            <select class="editorLanguage form-select form-select-sm">
-                                <option value="cpp" class="language">cpp</option>
-                                <option value="java" class="language">java</option>
-                                <option value="python" class="language">python</option>
-                                <option value="javascript" class="language">javascript</option>
-                            </select>
-                        </div>
-                        
-                        <div class="row item settings justify-content-center align-items-center">
-                            <!-- <i class="col fas fa-cog" href="#codeEditor5150_modalSetting"></i> -->
-
-                            <i id="codeEditor5150_format_code" class="col fa fa-format  format-code" aria-hidden="true"
-                                title="Format your code"><span class="row">{ }</span>
-                            </i>
-                            <!-- <i id="codeEditor5150_reset_code" class="col fas fa-sync" aria-hidden="true"
-                                title="Reset your code"></i>
-                            <i id="codeEditor5150_full_screen" class="col fa fa-arrows-alt code-fullscreen"
-                                aria-hidden="true" title="FullScreen"></i> -->
-                        </div>
-                        <div class="">
-                            <i id="compile_code" class="fa fa-play code-run btn-compile" title="Run"></i>
-                            Run
-                        </div>
-                    </div>
-                </div>
-                <div id="firepad-container"></div>
-
-
-                <div class="console">
-                    <div class="header">
-                        <div class="consoleOptions options">
-                            <div>
-                                <span id="consoleButton" class="btn btn-light"><i class="fa fa-caret-up"></i>
-                                    Console
-                                </span>
-                                <span>
-                                    <i class="far fa-clock"></i>
-                                    <span id="codeEditor5150_compile_time" class="hide-on-med-and-down"> Time</span>
-                                </span>
-                                <span>
-                                    <i class="fa fa-microchip"></i><span class="hide-on-med-and-down" id="codeEditor5150_compile_memory">
-                                        Memory</span>
-                                </span>
-                                <span id="codeEditor5150_compile_status" class="op-heading">
-                                    <i class="fa fa-check-circle"></i>
-                                
-                                    <span id="codeEditor5150_message" class="hide-on-med-and-down">Status</span>
-                                </span>
-                            </div>
-                            <button class="btn btn-danger">Submit</button>
-                        </div>
-                        
-                    </div>
-                    <div class="consoleBody">
-                        <textarea class="form-control" rows="10"></textarea>
-                    </div>
-                    
-                </div>
-
-                
-                
-
-                <!-- <ul id="codeEditor5150_collapsible" class="collapsible no-margin colap-code  ">
-                    <li class="no-margin active">
-                        <div class="collapsible-header  row no-margin console">
-                            <div class="col l10 s10">
-                
-                                <span>&nbsp; &nbsp; <i class="fa fa-caret-up  downArrowToRotate"></i>
-                                    <span class="hide-on-med-and-down">
-                
-                                    </span> Console
-                                </span>
-                                <span>
-                                    <i class="fa  fa-clock-o"></i>
-                                    <span id="codeEditor5150_compile_time" class="hide-on-med-and-down"> Time</span>
-                                </span>
-                                <span>
-                                    <i class="fa fa-microchip"></i><span class="hide-on-med-and-down"
-                                        id="codeEditor5150_compile_memory">
-                                        Memory</span>
-                                </span>
-                                <span id="codeEditor5150_compile_status" class="op-heading">
-                                    <i class="fa fa-check-circle"></i>
-                
-                                    <span id="codeEditor5150_message" class="hide-on-med-and-down">Status</span>
-                                </span>
-                            </div>
-                
-                            <div class="col l2">
-                
-                
-                                <a href="#" id="codeEditor5150_submit_code" class="btn btn-submit  center red white-text  bolder "
-                                    style="height: 35px;line-height:35px">
-                                    &nbsp;Submit</a>
-                            </div>
-                        </div>
-
-                        
-                        <div class="collapsible-body" style="display: block;">
-                
-                
-                            <div class="row  " style="margin-bottom:2px">
-                                <div class="col s12">
-                                    <ul id="codeEditor5150_tab" class="tabs  output-tabs">
-                                        <li id="codeEditor5150_tab_output" class="tab col s3 active">
-                                            <a class="bolder" href="#codeEditor5150_output_box">output</a>
-                                        </li>
-                                        <li id="codeEditor5150_tab_input" class="tab col s3"><a class="bolder active" id="hello"
-                                                href="#codeEditor5150_input_box">input</a>
-                                        </li>
-                                        <li class="indicator" style="left: 144px; right: 289px;"></li>
-                                    </ul>
-                                </div>
-                                <div id="codeEditor5150_output_box" class="col s12" style="height: 20vh; display: none;">
-                                    <pre id="codeEditor5150_compile_actual_output"
-                                        placeholder="Add your own input here , else programe will run against default test case"
-                                        class="output no-margin " style="height:100%;overflow-y:scroll" rows="6" autocomplete="off"
-                                        autocorrect="off" autocapitalize="off" spellcheck="false"></pre>
-                
-                                    <div id="codeEditor5150_submit_actual_output">
-                                    </div>
-                                </div>
-                                <div id="codeEditor5150_input_box" class="col s12 active"
-                                    style="height: 100%; line-height: 1rem; width: 98%; display: block;">
-                                    <textarea class="customArea no-margin" id="codeEditor5150_customInput"
-                                        style="border: none; height: 261px; margin: 0px; width: 577px;"
-                                        placeholder="Add your own input here , else programe will run against default test case"
-                                        rows="6" autocomplete="off" autocorrect="off" autocapitalize="off"
-                                        spellcheck="false"></textarea>
-                                </div>
-                            </div>
-                
-                        </div>
-                    </li>
-                
-                </ul> -->
-            </div>
-
+  <head>
+    <title>Twilio Video QuickStart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="editor.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img src="https://www.twilio.com/docs/static/img/wordmark.06c5f14fff7c.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        <span style="margin: 0 10px">Video Quick Start</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-content" aria-controls="collapsible-content" aria-expanded="false" aria-label="Toggle Navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsible-content">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/examples">More Examples</a>
+          </li>
+        </ul>
+        <button class="btn btn-outline-primary" id="leave-room">Leave Room</button>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row" id="room">
+        <div id="participants" class="col-xs-12 col-sm-3 col-md-2" style="text-align: center"></div>
+        <div id="active-participant" class="col-xs-12 col-sm-9 col-md-10" style="text-align: center">
+          <div class="participant main">
+            <video autoplay playsinline muted></video>
+          </div>
         </div>
-        <div id="room" class="col-3 bg-light">
-            <!-- Video -->
-            <!-- <div class="header bold">Room</div> -->
-            <!-- <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">
-                    <span style="margin: 0 10px">PepCoding MOX</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-content"
-                    aria-controls="collapsible-content" aria-expanded="false" aria-label="Toggle Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsible-content">
-                    <button class="btn btn-outline-primary" id="leave-room">End Session</button>
-                </div>
-                <div class="collapse navbar-collapse" id="collapsible-content">
-                    <i class="fa fa-cog cameraSettings" aria-hidden="true" style="color: white;"></i>
-                </div>
-            </nav> -->
-            
-            <div class="videoDiv">
-                <div id="participants"></div>
-                
-                <div id="controls" class="bg-dark">
-                    <button class="btn-circle btn-light microphoneOn" style="display: none;"><span class="fas fa-microphone"></span></button>
-                    <button class="btn-circle btn-light microphoneSlash"><span class="fas fa-microphone-slash"></span></button>
-                    <button class="btn-circle btn-light videoOn" style="display: none;"><span class="fas fa-video"></span></button>
-                    <button class="btn-circle btn-light videoSlash"><span class="fas fa-video-slash"></span></button>
-                    <button class="btn-circle btn-light videoSetting"><span class="fas fa-cog"></span></button>
-                </div>
+      </div>
+      <div id="modals">
+        <div class="modal fade" id="select-mic" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="select-mic-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="select-mic-label">Microphone</h5>
+              </div>
+              <div class="modal-body" style="text-align: center">
+                <select style="width: 100%"></select>
+                <svg focusable="false" viewBox="0 0 100 100" aria-hidden="true" height="100" width="100" style="margin: 10px 0">
+                  <defs>
+                    <clipPath id="level-indicator">
+                      <rect x="0" y="100" width="100" height="100" />
+                    </clipPath>
+                  </defs>
+                  <path fill="rgb(220, 220, 220)" d="m52 38v14c0 9.757-8.242 18-18 18h-8c-9.757 0-18-8.243-18-18v-14h-8v14c0 14.094 11.906 26 26 26v14h-17v8h42v-8h-17v-14c14.094 0 26-11.906 26-26v-14h-8z"></path>
+                  <path fill="rgb(220, 220, 220)" d="m26 64h8c5.714 0 10.788-4.483 11.804-10h-11.887v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h11.887c-1.016-5.517-6.09-10-11.804-10h-8c-6.393 0-12 5.607-12 12v40c0 6.393 5.607 12 12 12z"></path>
+                  <path fill="#080" clip-path="url(#level-indicator)" d="m52 38v14c0 9.757-8.242 18-18 18h-8c-9.757 0-18-8.243-18-18v-14h-8v14c0 14.094 11.906 26 26 26v14h-17v8h42v-8h-17v-14c14.094 0 26-11.906 26-26v-14h-8z"></path>
+                  <path fill="#080" clip-path="url(#level-indicator)" d="m26 64h8c5.714 0 10.788-4.483 11.804-10h-11.887v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h11.887c-1.016-5.517-6.09-10-11.804-10h-8c-6.393 0-12 5.607-12 12v40c0 6.393 5.607 12 12 12z"></path>
+                </svg>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Apply</button>
+              </div>
             </div>
-
-            
-
-            <!-- <div id="modals">
-                <div class="modal fade" id="select-mic" data-backdrop="static" tabindex="-1" role="dialog"
-                    aria-labelledby="select-mic-label" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="select-mic-label">Microphone</h5>
-                            </div>
-                            <div class="modal-body" style="text-align: center">
-                                <select style="width: 100%"></select>
-                                <svg focusable="false" viewBox="0 0 100 100" aria-hidden="true" height="100" width="100"
-                                    style="margin: 10px 0">
-                                    <defs>
-                                        <clipPath id="level-indicator">
-                                            <rect x="0" y="100" width="100" height="100" />
-                                        </clipPath>
-                                    </defs>
-                                    <path fill="rgb(220, 220, 220)"
-                                        d="m52 38v14c0 9.757-8.242 18-18 18h-8c-9.757 0-18-8.243-18-18v-14h-8v14c0 14.094 11.906 26 26 26v14h-17v8h42v-8h-17v-14c14.094 0 26-11.906 26-26v-14h-8z">
-                                    </path>
-                                    <path fill="rgb(220, 220, 220)"
-                                        d="m26 64h8c5.714 0 10.788-4.483 11.804-10h-11.887v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h11.887c-1.016-5.517-6.09-10-11.804-10h-8c-6.393 0-12 5.607-12 12v40c0 6.393 5.607 12 12 12z">
-                                    </path>
-                                    <path fill="#080" clip-path="url(#level-indicator)"
-                                        d="m52 38v14c0 9.757-8.242 18-18 18h-8c-9.757 0-18-8.243-18-18v-14h-8v14c0 14.094 11.906 26 26 26v14h-17v8h42v-8h-17v-14c14.094 0 26-11.906 26-26v-14h-8z">
-                                    </path>
-                                    <path fill="#080" clip-path="url(#level-indicator)"
-                                        d="m26 64h8c5.714 0 10.788-4.483 11.804-10h-11.887v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h12.083v-4h-12.083v-4h11.887c-1.016-5.517-6.09-10-11.804-10h-8c-6.393 0-12 5.607-12 12v40c0 6.393 5.607 12 12 12z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Apply</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="select-camera" data-backdrop="static" tabindex="-1" role="dialog"
-                    aria-labelledby="select-camera-label" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="select-camera-label">Camera</h5>
-                            </div>
-                            <div class="modal-body" style="text-align: center">
-                                <select style="width: 100%"></select>
-                                <video autoplay muted playsInline style="margin: 10px 0; width: 60%"></video>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Apply</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="show-error" data-backdrop="static" tabindex="-1" role="dialog"
-                    aria-labelledby="show-error-label" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="show-error-label">Error</h5>
-                            </div>
-                            <div class="modal-body">
-                                <div class="alert alert-warning" role="alert">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            
-            
-            <div id="chat">
-                <div class="header bold chat-head"><h5>Chat</h5></div>
-                <!-- messages will display here -->
-                <ul id="messages"></ul>
-            
-                <!-- form to send message -->
-                <form id="message-form">
-                    <input id="message-input" type="text" />
-                    <button id="message-btn" type="submit">Send</button>
-                </form>
-            </div>
-
-            <!-- Video -->
+          </div>
         </div>
+        <div class="modal fade" id="select-camera" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="select-camera-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="select-camera-label">Camera</h5>
+              </div>
+              <div class="modal-body" style="text-align: center">
+                <select style="width: 100%"></select>
+                <video autoplay muted playsInline style="margin: 10px 0; width: 60%"></video>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="join-room" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="join-room-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="join-room-label">Video Chat</h5>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label id="room-name-label" for="room-name">Room Name</label>
+                  <input id="room-name" class="form-control" type="text" />
+                </div>
+                <div class="form-group">
+                  <label id="screen-name-label" for="screen-name">User Name</label>
+                  <input id="screen-name" class="form-control" type="text" />
+                </div>
+                <div class="alert alert-warning" role="alert">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark">Change Microphone and Camera</button>
+                <button type="button" class="btn btn-primary">Join</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="show-error" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="show-error-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="show-error-label">Error</h5>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button id = "start"> start recording</button>
-    <button id= "end">end recording</button>
-    <!-- <script src="/js/editor.js"></script> -->
-    <script src="./video.js"></script>
-    <!-- <script src="/js/videoControl.js"></script>
-    <script src="/js/record.js"></script> -->
-    <!-- <script src="/js/chat.js"></script> -->
-
-</body>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="video.js"></script>
+  </body>
 </html>
