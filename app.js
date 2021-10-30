@@ -11,9 +11,7 @@ const app = express();
 app.use(express.static(__dirname+"/public"));
 const twilioVideoController = require("./controller/twilioVideoController")
 
-const map = new Map();
-var roomId ;
-var today = new Date();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
@@ -27,8 +25,12 @@ const wss = new SocketServer({ server });
 
 wss.on('connection', (ws) => {
     console.log("user connected ");
+    ws.on('close' , ()=>{
+        console.log("userdisconnected");
+    })
    
 })
+
 
 app.get(`/video` , (req , res)=>{
     console.log("hello video");
@@ -37,8 +39,23 @@ app.get(`/video` , (req , res)=>{
 
 app.get('/video/token' , twilioVideoController.getToken);
 
-
-
+let c =0;
+app.get('/check'  , async(req , res)=>{
+    console.log('/check' + c++);
+    // console.log(req.query);
+    // console.log(req.body);
+    const userid = req.query.UserId;
+    console.log(userid);
+    const isExist = await slotMatching.find({UserId : userid});
+    if(isExist.length>0)
+    {
+        if(isExist[0].Status == "matched")
+        {
+            res.send("matched");
+            
+        }
+    }
+})
 
 
 app.post('/slotbook' , async(req , res)=>{
@@ -118,25 +135,12 @@ function check(req ,res  ,userid)
     
 }
 
-async function check2(req , res)
-{
 
-    const isExist = await slotMatching.find({UserId : userid});
-    if(isExist.length>0)
-    {
-        if(isExist[0].Status == "matched")
-        {
-            var string = encodeURIComponent(userid);
-            res.redirect(`/video#` + string);
-            clearInterval(set);
-        }
-    }
-}
-
+let c2 =0;
  
 app.post("/join",async (req,res) => {
     
-    
+    console.log("join" +c2++)
     try {
         // console.log(req)
     const userId = req.body.UserId;
@@ -157,7 +161,7 @@ app.post("/join",async (req,res) => {
         slotMatch.AllotedRoomId = -1;
         slotMatch.UserId = userId;
         slotMatch.jwtToken = slotBook[0].jwtToken;
-        slotMatch.socketId = map.get(userId);
+        
         await slotMatch.save();
     }
     else {
