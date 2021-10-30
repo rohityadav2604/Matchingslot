@@ -5,7 +5,7 @@ const slotMatchingSchema = mongoose.Schema({
     Time : Number,
     Topic : String,
     LanguagePreffered : String,
-    AllotedRoomId : Number,
+    AllotedRoomId : String,
     UserId : Number
     ,
     // idx : Number,

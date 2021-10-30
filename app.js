@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const slotBooking = require("./models/slotBooking.js");
 const slotMatching = require("./models/slotMatching.js");
-
+const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const cors = require("cors");
 const SocketServer = require('ws').Server;
@@ -51,7 +51,7 @@ app.get('/check'  , async(req , res)=>{
     {
         if(isExist[0].Status == "matched")
         {
-            res.send("matched");
+            res.send({status : "matched" , roomid : isExist[0].AllotedRoomId});
             
         }
     }
@@ -105,12 +105,14 @@ async function matching(slotMatch){
         {   
             f = 1;
             console.log("matched");
-            await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId : 12});
-            await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId : 12});
+            let roomid = uuidv4();
+            roomid = roomid.split('-').join().substring(0 , 5);
+            await slotMatching.findByIdAndUpdate({_id : matched[i]._id},{Status : "matched",AllotedRoomId :roomid });
+            await slotMatching.findByIdAndUpdate({_id : slotMatch._id},{Status : "matched",AllotedRoomId :roomid });
 
-        wss.clients.forEach(client => client.send(JSON.stringify({p1:slotMatch.UserId ,p2 : matched[i].UserId })));
+        wss.clients.forEach(client => client.send(JSON.stringify({status : "matched" , roomid : roomid , p1:slotMatch.UserId  , p2 : matched[i].UserId})));
 
-            return 1;
+            return {status : "matched" , roomid : roomid , p1:slotMatch.UserId  , p2 : matched[i].UserId};
         }
     }
     return -1;
@@ -172,19 +174,20 @@ app.post("/join",async (req,res) => {
             if(isExist[0].Status  == "matched")
             {
             
-               res.send("matched");
+               res.send({status : "matched" , roomid : slotMatch.AllotedRoomId});
+               console.log("hekkdefik");
                 
             }
     }
     const result =  await matching(slotMatch);
-    if(result == 1)
-    {
-        res.send("matched");
-    }
-    else
-    {
-        res.send("notmatched");
-    }
+    // if(result.status == "matched")
+    // {
+    //     res.send({status : "matched" , roomid : result.roomid});
+    // }
+    // else
+    // {
+    //     res.send("notmatched");
+    // }
     
 
     }

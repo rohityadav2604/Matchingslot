@@ -29932,9 +29932,16 @@
     //   return selectMicrophone();
     // }
     //const { identity, roomName } = formData;
-      let name = window.location.hash.replace("#" , "");
+      // let name = window.location.hash.replace("#" , "");
+      // let roomid = window.location.hash.replace("@" , "");
+      let idxOfName = window.location.href.indexOf("#");
+      let idxOfRoom= window.location.href.indexOf('@');
+      let name = window.location.href.substring(idxOfName+1 , idxOfRoom)
+      let roomid = window.location.href.substring(idxOfRoom+1 );
+      
+      console.log(roomid);
       let identity = name;
-      let roomName = "room1";
+      let roomName = roomid;
     
      
     try {

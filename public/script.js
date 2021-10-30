@@ -4,17 +4,17 @@ var socket = new WebSocket("ws://localhost:3000");
 socket.onopen = async function (event) {
   console.log("Connection established");
   
-    let userid = document.querySelector("#useridjoin").value;
-   const res =  await axios.get('/check' , {
-      params:{
-        UserId :1
+  //   let userid = document.querySelector("#useridjoin").value;
+  //  const res =  await axios.get('/check' , {
+  //     params:{
+  //       UserId :3
   
-      }
-    })
-    if(res.data == "matched")
-    {
-          window.location = '/video#'+1;
-    }
+  //     }
+  //   })
+  //   if(res.data.status == "matched")
+  //   {
+  //         window.location = '/video#'+1;
+  //   }
   
    
 
@@ -36,11 +36,11 @@ socket.onmessage = function (e) {
   
 
   if (jsonMsg.p1 == uid) {
-    window.location = "/video#" + jsonMsg.p1;
+    window.location = "/video#" + jsonMsg.p1 +"@" + jsonMsg.roomid ;
   }
 
   if (jsonMsg.p2 == uid) {
-    window.location = "/video#" + jsonMsg.p2;
+    window.location = "/video#" + jsonMsg.p2 +"@" + jsonMsg.roomid;
   }
 };
 
@@ -61,6 +61,10 @@ async function makesearch() {
   const res = await axios.post("http://localhost:3000/join", {
     UserId: userid,
   });
+  if(res.data.status == "matched")
+  {
+    window.location = "/video#" + userid + "@" + res.data.roomid;
+  }
   
 }
 
